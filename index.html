@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscaminas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="vidasBoard">
+        <div class="vidasContainer">
+            <img id="vida1" src="corazon.svg" alt="vida1">
+            <img id="vida2" src="corazon.svg" alt="vida2">
+            <img id="vida3" src="corazon.svg" alt="vida3">
+            <img id="vidaNegra1" src="corazonNegro.svg" alt="vida1">
+            <img id="vidaNegra2" src="corazonNegro.svg" alt="vida2">
+            <img id="vidaNegra3" src="corazonNegro.svg" alt="vida3">
+        </div>
+        <div id="board"></div>
+    </div>
+    <div class="statistics">
+        <div class="levelSelect">
+            <label for="level">Nivel:</label>
+            <select id="level">
+                <option value="noob">Novato</option>
+                <option value="easy">Fácil</option>
+                <option value="medium">Intermedio</option>
+                <option value="hard">Difícil</option>
+                <option value="expert">Experto</option>
+            </select>
+            <button onclick="startGame()">Comenzar</button>
+        </div>
+        <div class="counterResult">
+            <span id="flagCounter">Banderas restantes: </span>
+            <span id="result"></span>
+        </div>
+        <div id="explosion"></div>
+        <div id="winAnimation"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
