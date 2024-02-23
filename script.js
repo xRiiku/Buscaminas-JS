@@ -16,21 +16,28 @@ const result = document.querySelector("#result"); //Selecciona el elemento del H
 const explosion = document.getElementById("explosion"); //Selecciona el elemento del HTML donde se mostrará la explosión si pierdes
 const confetti = document.getElementById("winAnimation"); //Selecciona el elemento del HTML donde se mostrará el confetti si ganas
 const startButton = document.querySelector("button"); // Obtén una referencia al botón startGame
-let currentLevel = "easy"; //Almacena el nivel actual del juego
+let currentLevel = "noob"; //Almacena el nivel actual del juego
 let board = []; //Representa el tablero del juego
 let flagsPlaced = 0; //Contador de banderas colocadas en el tablero
 let gameOver = false; //Variable para controlar si el juego ha terminado
 let contadorVidas = 3;
+let minesExploded = 0;
+let minasTotales;
 
 /* Inicializa el juego con el nivel seleccionado, inicializa el tablero, lo muestra en la interfaz, 
 actualiza el contador de banderas y maneja la recarga de la página si el juego ha terminado. */
 function startGame() {
+  minasTotales = levels[currentLevel].mines;
   currentLevel = document.getElementById("level").value;
-  contadorVidas = 3;
+  contadorVidas = 3; // Reinicia el contador vidas
+  minesExploded = 0; // Reinicia el contador de minas explotadas
+  flagsPlaced = 0; // Reinicia el contador de banderas colocadas
   checkVidas();
   initializeBoard();
   renderBoard();
   updateFlagCounter();
+  updateMineCounter();
+  minasTotales = levels[currentLevel].mines;
   if (gameOver) {
     gameOver = false; // Reiniciar el estado del juego
     explosion.classList.remove("explode"); // Elimina la clase que activa la animación de explosión
@@ -38,7 +45,6 @@ function startGame() {
     confetti.classList.remove("win"); // Elimina la clase que activa la animación de confeti
     confetti.style.display = "none"; // Oculta el elemento de confeti
     result.innerHTML = ""; //Oculta el elemento del resultado de la partida
-    contadorVidas = 3;
     checkVidas();
   }
 }
@@ -107,7 +113,11 @@ function revealCell(row, col) {
   board[row][col].revealed = true;
 
   if (board[row][col].isMine) {
-    contadorVidas--;
+    contadorVidas--; // Resta 1 a las vidas restantes al explotar una mina
+    flagsPlaced++; //  Incrementa el contador de banderas colocadas
+    minesExploded++; // Incrementa el contador de minas explotadas
+    updateFlagCounter(); // Actualiza el contador de banderas
+    updateMineCounter(); // Actualiza el contador de minas
     checkVidas();
     checkGameOver();
   } else if (board[row][col].value === 0) {
@@ -171,11 +181,10 @@ function checkGameOver() {
 /* Verifica si el jugador ha ganado el juego al revelar todas las celdas no minadas y colocar banderas correctamente. */
 function checkWin() {
   const { rows, cols } = levels[currentLevel];
-  let minasTotales = levels[currentLevel].mines;
   let celdasSinMina = rows * cols - levels[currentLevel].mines;
   let CeldaReveladaSinMina = 0;
   let BanderaCoincideMina = 0;
-  let minesExploded = 0;
+  let CeldaReveladaConMina = 0;
 
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
@@ -183,7 +192,7 @@ function checkWin() {
         CeldaReveladaSinMina++;
       }
       if (board[i][j].revealed && board[i][j].isMine) {
-        minesExploded++;
+        CeldaReveladaConMina++;
       }
       if (board[i][j].flagged && board[i][j].isMine) {
         BanderaCoincideMina++;
@@ -208,7 +217,7 @@ function toggleFlag(row, col) {
   if (board[row][col].flagged) {
     flagsPlaced--;
   } else {
-    if (flagsPlaced >= levels[currentLevel].mines) {
+    if (flagsPlaced >= minasTotales) {
       return;
     }
     flagsPlaced++;
@@ -283,7 +292,14 @@ function renderBoard() {
 //Actualiza el contador de banderas mostrado en la interfaz.
 function updateFlagCounter() {
   const flagCounterElement = document.getElementById("flagCounter");
-  flagCounterElement.textContent = `Banderas restantes: ${levels[currentLevel].mines - flagsPlaced}`;
+  flagCounterElement.textContent = `Banderas restantes: ${minasTotales - flagsPlaced}`;
+  console.log("FLAGCOUNTER ==> flagsPlaced = ", flagsPlaced, " minesExploded = ", minesExploded, " minasTotales = ", minasTotales)
+}
+
+function updateMineCounter() {
+  const mineCounterElement = document.getElementById("mineCounter");
+  mineCounterElement.textContent = `Minas restantes: ${minasTotales - minesExploded}`;
+  console.log("MINECOUNTER ==> flagsPlaced = ", flagsPlaced, " minesExploded = ", minesExploded, " minasTotales = ", minasTotales)
 }
 
 startGame();

@@ -59,8 +59,9 @@ button:hover {
 
 .counterResult {
     margin-top: 2vh;
-    /* Espaciado desde arriba */
     gap: 2vw;
+    display: flex;
+    flex-direction: column;
 }
 
 #board {
