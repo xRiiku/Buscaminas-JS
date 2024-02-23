@@ -27,8 +27,8 @@ let minasTotales;
 /* Inicializa el juego con el nivel seleccionado, inicializa el tablero, lo muestra en la interfaz, 
 actualiza el contador de banderas y maneja la recarga de la página si el juego ha terminado. */
 function startGame() {
-  minasTotales = levels[currentLevel].mines;
   currentLevel = document.getElementById("level").value;
+  minasTotales = levels[currentLevel].mines;
   contadorVidas = 3; // Reinicia el contador vidas
   minesExploded = 0; // Reinicia el contador de minas explotadas
   flagsPlaced = 0; // Reinicia el contador de banderas colocadas
