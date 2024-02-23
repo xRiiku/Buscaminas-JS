@@ -15,12 +15,12 @@ const vidaNegra3 = document.querySelector("#vidaNegra3");
 const result = document.querySelector("#result"); //Selecciona el elemento del HTML donde se mostrará el resultado del juego.
 const explosion = document.getElementById("explosion"); //Selecciona el elemento del HTML donde se mostrará la explosión si pierdes
 const confetti = document.getElementById("winAnimation"); //Selecciona el elemento del HTML donde se mostrará el confetti si ganas
+const startButton = document.querySelector("button"); // Obtén una referencia al botón startGame
 let currentLevel = "easy"; //Almacena el nivel actual del juego
 let board = []; //Representa el tablero del juego
 let flagsPlaced = 0; //Contador de banderas colocadas en el tablero
 let gameOver = false; //Variable para controlar si el juego ha terminado
 let contadorVidas = 3;
-console.log("Contador de vidas: ", contadorVidas);
 
 /* Inicializa el juego con el nivel seleccionado, inicializa el tablero, lo muestra en la interfaz, 
 actualiza el contador de banderas y maneja la recarga de la página si el juego ha terminado. */
@@ -150,6 +150,7 @@ function checkVidas() {
 
 function checkGameOver() {
   if (gameOver) {
+    startButton.style.display = "none"
     explosion.classList.add("explode"); // Agrega la clase para mostrar la animación
     explosion.style.display = "inline-block";
     result.innerHTML = "</br> BOOM! </br> YOU LOSE!";
@@ -157,6 +158,7 @@ function checkGameOver() {
       revealAll();
     }, 2000);
   } else if (!gameOver && checkWin()) {
+    startButton.style.display = "none"
     confetti.classList.add("win"); // Agrega la clase para mostrar la animación
     confetti.style.display = "inline-block";
     result.innerHTML = "</br> YOU WIN!";
@@ -226,8 +228,8 @@ function revealAll() {
     }
   }
   renderBoard();
+  startButton.style.display = "inline-block"
 }
-
 /* Renderiza el tablero en la interfaz, mostrando las celdas reveladas, 
 banderas colocadas y números correspondientes a las minas adyacentes. */
 function renderBoard() {
