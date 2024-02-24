@@ -23,7 +23,6 @@ let gameOver = false; //Variable para controlar si el juego ha terminado
 let contadorVidas = 3;
 let minesExploded = 0;
 let minasTotales;
-
 /* Inicializa el juego con el nivel seleccionado, inicializa el tablero, lo muestra en la interfaz, 
 actualiza el contador de banderas y maneja la recarga de la página si el juego ha terminado. */
 function startGame() {
@@ -37,7 +36,6 @@ function startGame() {
   renderBoard();
   updateFlagCounter();
   updateMineCounter();
-  minasTotales = levels[currentLevel].mines;
   if (gameOver) {
     gameOver = false; // Reiniciar el estado del juego
     explosion.classList.remove("explode"); // Elimina la clase que activa la animación de explosión
@@ -105,7 +103,8 @@ function revealCell(row, col) {
     col < 0 ||
     col >= board[0].length ||
     board[row][col].revealed ||
-    board[row][col].flagged
+    board[row][col].flagged || 
+    (minasTotales === flagsPlaced)
   ) {
     return;
   }
